@@ -14,11 +14,6 @@ export default function LoginModal() {
   const user = useSelector((state) => state.loginModal.user);
   const isOpen = useSelector((state) => state.loginModal.isOpen);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
-
   function handleInputChange(e) {
     const { name, value } = e.target;
     setFormData((prevdata) => ({
@@ -73,8 +68,6 @@ export default function LoginModal() {
             name="name"
             id="username"
             type="text"
-            value={formData.name}
-            onChange={handleInputChange}
             placeholder="enter name"
             required
           />
@@ -85,8 +78,6 @@ export default function LoginModal() {
             name="email"
             id="email"
             type="email"
-            value={formData.email}
-            onChange={handleInputChange}
             placeholder="enter your email"
             required
           />
