@@ -66,7 +66,7 @@ const watchlistSlice = createSlice({
 				state[email] = {
 					name: name,
 					email: email,
-					watchlists: [],
+					watchlists: [{ name: "My Watchlist", movies: [] }],
 				};
 				localStorage.setItem("watchlistState", JSON.stringify(state));
 			}
