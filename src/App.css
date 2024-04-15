@@ -13,7 +13,7 @@
 }
 
 body {
-	background-color: var(--COLOR-FIVE);
+	background-color: var(--COLOR-ONE);
 }
 
 header {
@@ -226,9 +226,9 @@ h1 {
 }
 
 .user {
-	background-color: var(--COLOR-FOUR);
+	border: 2px solid grey;
 	text-transform: uppercase;
-	color: white;
+	color: black;
 	position: relative;
 	padding: 0.5rem;
 	font-size: 14px;
@@ -353,7 +353,7 @@ main {
 
 #welcome-container {
 	border: 2px solid var(--COLOR-THREE);
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 1rem;
 }
 #welcome-text {
@@ -385,7 +385,6 @@ main {
 	width: 100%;
 	position: relative;
 	background-color: var(--COLOR-TWO);
-	border: 5px solid var(--COLOR-FOUR);
 	border-radius: 5px;
 	padding-bottom: 10px;
 	box-shadow: 0 10px 5px 0 rgba(0, 0, 0, 0.3);
@@ -431,10 +430,15 @@ main {
 .bookmark-icon,
 .remove-icon {
 	font-size: 2rem;
+	color: var(--COLOR-FIVE);
+}
+
+.remove-icon {
 	color: var(--COLOR-ONE);
 }
 
 .plus-icon {
+	color: white;
 	font-size: 1.1rem;
 	position: absolute;
 	left: 50%;
@@ -445,10 +449,6 @@ main {
 .bookmark:hover > .bookmark-icon,
 .remove:hover > .remove-icon {
 	color: var(--COLOR-THREE);
-}
-
-.bookmark:hover > .plus-icon {
-	color: var(--COLOR-ONE);
 }
 
 /*Details Page*/
@@ -479,7 +479,7 @@ main {
 
 	#root {
 		display: flex;
-		gap: 2rem;
+		gap: 1rem;
 	}
 
 	header {
