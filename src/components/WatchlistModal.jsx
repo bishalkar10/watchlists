@@ -11,7 +11,9 @@ import {
 export default function watchlistModal() {
 	const watchlistModalRef = useRef();
 	const dispatch = useDispatch();
-	const [newWatchlist, setNewWatchlist] = useState("");
+	const [newWatchlist, setNewWatchlist] = useState(""); // this state is used in the input field
+	const [selectedWatchlist, setSelectedWatchlist] = useState(""); // this state is use for the select tag value
+
 	const movie = useSelector((state) => state.watchlistModal.selectedMovie);
 	const isOpen = useSelector((state) => state.watchlistModal.isOpen);
 
@@ -23,9 +25,9 @@ export default function watchlistModal() {
 		}
 	}, [isOpen]);
 
-	const [selectedWatchlist, setSelectedWatchlist] = useState("");
 	const user = useSelector((state) => state.loginModal.user);
 
+	//
 	const watchlists = useSelector(
 		(state) =>
 			(user && user.email && state.watchlist[user.email]?.watchlists) || [],
