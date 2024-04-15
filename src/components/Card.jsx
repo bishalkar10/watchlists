@@ -5,7 +5,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSelectedMovie,
@@ -20,7 +20,6 @@ export default function Card(props) {
   const movie = { imdbID, Title, Year, Poster }; // store this objects needed in movie object which we will pass to Card component
   const dispatch = useDispatch();
   const email = useSelector((state) => state.loginModal.user.email);
-  const navigate = useNavigate();
 
   function handleBookmarkClick(e) {
     e.preventDefault();
@@ -39,28 +38,33 @@ export default function Card(props) {
     dispatch(removeMovie({ email, watchlistName, imdbID }));
   }
 
-  function openDetails() {
-    //
-    navigate(`/details/${imdbID}`);
-  }
-
   return (
-    <li className="card" onClick={openDetails}>
-      <figure>
-        <div className="image-container">
-          <img src={Poster} alt={`Picture of ${Title}`} />
-        </div>
-        <figcaption>
-          <span className="title">{Title}</span>
-          <span className="year">({Year})</span>
-        </figcaption>
-      </figure>
+    <li className="card">
+      <Link to={`/details/${imdbID}`}>
+        <figure>
+          <div className="image-container">
+            <img src={Poster} alt={`Picture of ${Title}`} />
+          </div>
+          <figcaption>
+            <span className="title">{Title}</span>
+            <span className="year">({Year})</span>
+          </figcaption>
+        </figure>
+      </Link>
       {bookmarked ? (
-        <button className="remove" onClick={handleRemove}>
+        <button
+          className="remove"
+          aria-label={`Remove ${Title} from the watchlist`}
+          onClick={handleRemove}
+        >
           <FontAwesomeIcon className="remove-icon" icon={faTrashCan} />
         </button>
       ) : (
-        <button className="bookmark" onClick={handleBookmarkClick}>
+        <button
+          className="bookmark"
+          aria-label={`Bookmark ${Title}`}
+          onClick={handleBookmarkClick}
+        >
           <FontAwesomeIcon className="bookmark-icon" icon={faBookmark} />
           <FontAwesomeIcon className="plus-icon" icon={faPlus} />
         </button>
