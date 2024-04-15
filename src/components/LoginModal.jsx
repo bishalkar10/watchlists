@@ -5,7 +5,7 @@ import {
   logout,
   hideLoginModal,
 } from "../features/loginModal/loginModalSlice"; // Adjust the import path as necessary
-
+import { showBookmarkWatchlistModal } from "../features/watchlist/watchlistModalSlice";
 import { addUser } from "../features/watchlist/watchlistSlice";
 
 export default function LoginModal() {
@@ -40,29 +40,33 @@ export default function LoginModal() {
     dispatch(hideLoginModal());
   }
 
-  function handleLogin(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    const trimmedFormData = {};
 
-    // remove the trailing spaces of the vlaues
-    Object.entries(formData).forEach(([key, value]) => {
-      trimmedFormData[key] = value.trim();
-    });
+    // Access form data directly from the form element
+    const formData = new FormData(e.target);
 
-    // Update formData with trimmed values
-    if (Object.values(trimmedFormData).every((value) => value)) {
-      setFormData(trimmedFormData);
-      dispatch(login(trimmedFormData));
+    // Get the values of the form fields
+    const name = formData.get("name").trim();
+    const email = formData.get("email").trim();
+
+    // Define regular expression pattern for email validation
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Validate input fields
+    if (name && email && emailPattern.test(email)) {
+      // Dispatch actions with form data
+      dispatch(login({ name, email }));
       dispatch(hideLoginModal());
-      dispatch(addUser(trimmedFormData));
+      dispatch(addUser({ name, email }));
     } else {
-      console.log("Any fields cannot be empty");
+      console.log("Please fill in all fields correctly.");
     }
   }
 
   return (
     <dialog ref={dialogRef}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           Name :
           <input
@@ -83,18 +87,15 @@ export default function LoginModal() {
             type="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder="name@email.com"
-            pattern="[a-z0-9\.]+@[a-z0-9\.]+\.[a-z]{2,}"
+            placeholder="enter your email"
             required
           />
         </label>
         <div className="button-container">
-          <button className="cancel-btn" onClick={closeModal}>
+          <button className="cancel-btn" type="button" onClick={closeModal}>
             Cancel
           </button>
-          <button className="save-btn" onClick={handleLogin}>
-            Log in
-          </button>
+          <button className="save-btn">Log in</button>
         </div>
       </form>
     </dialog>
