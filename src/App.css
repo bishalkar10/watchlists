@@ -386,10 +386,15 @@ main {
 	position: relative;
 	background-color: var(--COLOR-TWO);
 	border-radius: 5px;
-	padding-bottom: 10px;
 	box-shadow: 0 10px 5px 0 rgba(0, 0, 0, 0.3);
 }
-
+.card a {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	padding-bottom: 20px;
+	height: 100%;
+}
 .card figure {
 	display: flex;
 	gap: 1rem;
@@ -469,6 +474,12 @@ main {
 #details-page .plot {
 	margin: 1rem 0;
 }
+
+button:focus {
+	outline: 2px solid var(--COLOR-THREE);
+	outline-offset: 2px;
+}
+
 /*Media screen breakpoints*/
 
 @media screen and (width > 850px) {
