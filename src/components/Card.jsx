@@ -29,6 +29,9 @@ export default function Card(props) {
       dispatch(showBookmarkWatchlistModal());
       dispatch(setSelectedMovie(movie)); // Dispatch action to store selected movie data
     } else {
+      console.log(
+        "You are not logged in. You need to log in to add to watchlist",
+      );
       dispatch(showLoginModal());
     }
   }
