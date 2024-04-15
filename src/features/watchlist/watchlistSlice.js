@@ -58,20 +58,22 @@ const watchlistSlice = createSlice({
 	name: "watchlistSlice",
 	initialState: loadFromLocalStorage(),
 	reducers: {
+		// Adds a new user to the state along with a default watchlist if the user doesn't already exist
 		addUser: (state, action) => {
 			const { email, name } = action.payload;
-			console.log("addUser methoded called");
-			// when user is not present
+			console.log("addUser method called");
 			if (!state[email]) {
 				state[email] = {
 					name: name,
 					email: email,
 					watchlists: [{ name: "My Watchlist", movies: [] }],
 				};
+				// Update local storage with the new user data
 				localStorage.setItem("watchlistState", JSON.stringify(state));
 			}
 		},
 
+		// Creates a new watchlist for a user if it doesn't already exist
 		createWatchlist: (state, action) => {
 			const { email, watchlistName } = action.payload;
 			const user = state[email];
@@ -80,7 +82,9 @@ const watchlistSlice = createSlice({
 					(list) => list.name === watchlistName,
 				);
 				if (!watchlistExists) {
+					// Add the new watchlist to the user's watchlists
 					user.watchlists.push({ name: watchlistName, movies: [] });
+					// Update local storage with the updated state
 					localStorage.setItem("watchlistState", JSON.stringify(state));
 				} else {
 					console.log("Watchlist already exists");
@@ -88,37 +92,37 @@ const watchlistSlice = createSlice({
 			}
 		},
 
+		// Renames an existing watchlist for a user
 		renameWatchlist: (state, action) => {
 			const { email, oldName, newName } = action.payload;
-			// when renaming its gurranteed that the watchlist and user exist
 			const user = state[email];
-			// find the watchlist and update the name property
-			user.watchlists.forEach((list) => {
-				if (list.name === oldName) {
-					return {
-						...list,
-						name: newName,
-					};
-				}
-			});
-			localStorage.setItem("watchlistState", JSON.stringify(state));
+			if (user) {
+				// Find the watchlist to rename and update its name
+				user.watchlists.forEach((list) => {
+					if (list.name === oldName) {
+						list.name = newName;
+					}
+				});
+				// Update local storage with the updated state
+				localStorage.setItem("watchlistState", JSON.stringify(state));
+			}
 		},
 
+		// Adds a movie to a specific watchlist for a user
 		addMovie: (state, action) => {
 			const { email, watchlist, movie } = action.payload;
-			console.log(email, watchlist, movie);
 			const user = state[email];
 			if (user) {
 				const watchlistIndex = user.watchlists.findIndex(
 					(list) => list.name === watchlist,
 				);
 				if (watchlistIndex !== -1) {
-					const watchlistMovies =
-						state[email].watchlists[watchlistIndex].movies;
-					// Check if the movie ID already exists in the watchlist
+					const watchlistMovies = user.watchlists[watchlistIndex].movies;
+					// Check if the movie already exists in the watchlist
 					if (!watchlistMovies.some((m) => m.imdbID === movie.imdbID)) {
-						state[email].watchlists[watchlistIndex].movies.push(movie);
-						// Update local storage
+						// Add the movie to the watchlist
+						watchlistMovies.push(movie);
+						// Update local storage with the updated state
 						localStorage.setItem("watchlistState", JSON.stringify(state));
 					} else {
 						console.log("Movie already exists in the watchlist.");
@@ -126,6 +130,8 @@ const watchlistSlice = createSlice({
 				}
 			}
 		},
+
+		// Removes a movie from a specific watchlist for a user
 		removeMovie: (state, action) => {
 			const { email, watchlistName, imdbID } = action.payload;
 			const user = state[email];
@@ -134,14 +140,11 @@ const watchlistSlice = createSlice({
 					(list) => list.name === watchlistName,
 				);
 				if (watchlistIndex !== -1) {
-					const watchlistMovies =
-						state[email].watchlists[watchlistIndex].movies;
-					const updatedWatchlistMovies = watchlistMovies.filter(
-						(movie) => movie.imdbID !== imdbID,
-					);
-					state[email].watchlists[watchlistIndex].movies =
-						updatedWatchlistMovies;
-					// Update local storage
+					// Filter out the movie to remove from the watchlist
+					user.watchlists[watchlistIndex].movies = user.watchlists[
+						watchlistIndex
+					].movies.filter((movie) => movie.imdbID !== imdbID);
+					// Update local storage with the updated state
 					localStorage.setItem("watchlistState", JSON.stringify(state));
 				}
 			}
